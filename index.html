@@ -20,59 +20,75 @@
             margin: auto;
         }
 
-        #toDo {
-            margin: auto;
-            text-align: center;
-            padding: 50px;
-
-        }
+    
 
         #add {
             margin: 10px;
         }
 
         .list-group-item {
-
-            display: inline-block;
+            position: relative;
             margin: 10px;
+            text-align: left;
+            
         }
 
-        #delete {
-            display: inline-block;
-            margin-left: 25px;
+       
 
-        }
+     
 
         .check {
 
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            margin-left: 15px;
-
+            position: absolute;
+            right: 125px;
+            top: 15px;
+            width: 20px;
+            height: 20px;
+            
         }
 
-        .checked {
+        .lblDone{
+            position: absolute;
+            right: 85px;
+        }
 
-            visibility: hidden;
+        #btnDel{
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+        }
+
+      
+
+        #toDo {
+            margin: auto;
+            text-align: center;
+            width: 600px;
+            background-color: rgb(122, 155, 192);
+            margin-top: 50px;
+            position: relative;
+            
+
         }
     </style>
 
 </head>
 
-<body class="container">
+<body>
 
 
-    <div id="toDo" class="form-group">
+    <div id="toDo">
         <h1>To-Do <small>List</small></h1>
-
+        <!-- Sta znači "role"? -->
         <form role="form">
-            <input id="task" type="text" class="form-control" placeholder="Your Task" name="task">
+            <div class="form-group">
+                <input id="task" type="text" class="form-control" placeholder="Your Task" name="task">
 
+                <input id="add" type="button" value="Add" class="btn btn btn-primary">
+            </div>
+            <!-- Klasa list-group resava da idu jedno ispod drugog. -->
 
-            <input id="add" type="button" value="Add" class="btn btn btn-primary">
-
-            <ul id="ul" class="list-unstyled">
+            <ul id="ul" class="list-group">
 
 
 
@@ -130,13 +146,15 @@
                 done.setAttribute("class", "check");
 
                 var labelDone = document.createElement("LABEL");
-                labelDone = document.createTextNode("Done");
+                labelDone.setAttribute("class", "lblDone");
+                labelDone.textContent = "Done";
                 li.appendChild(labelDone);
 
                 //Delete task
 
                 var deleteButton = document.createElement("INPUT");
                 deleteButton.setAttribute("type", "button");
+                deleteButton.id = "btnDel";
                 deleteButton.setAttribute("class", "btn btn btn-danger");
                 deleteButton.value = "Delete";
                 li.appendChild(deleteButton);
@@ -166,11 +184,17 @@
                 }
 
                 deleteAllButton.onclick = function () {
-                    
-                        if (done.checked) {
-                            li.setAttribute("style", "display: none;");
-                        }
-                    
+
+                    if (done.checked) {
+                        li.setAttribute("class", "checked");
+                    }
+
+                    var checkedBoxes = document.getElementsByClassName("checked");
+                    for (var i = 0; i < checkedBoxes.length; i++) {
+                        checkedBoxes[i].setAttribute("style", "display:none;");
+                        console.log(checkedBoxes[i]);
+                    }
+
                 };
 
 
