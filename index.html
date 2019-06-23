@@ -20,8 +20,6 @@
             margin: auto;
         }
 
-    
-
         #add {
             margin: 10px;
         }
@@ -30,35 +28,29 @@
             position: relative;
             margin: 10px;
             text-align: left;
-            
+
         }
 
-       
-
-     
 
         .check {
-
             position: absolute;
-            right: 125px;
+            right: 145px;
             top: 15px;
             width: 20px;
             height: 20px;
-            
+
         }
 
-        .lblDone{
+        .lblDone {
             position: absolute;
             right: 85px;
         }
 
-        #btnDel{
+        .btnDel {
             position: absolute;
             right: 5px;
-            bottom: 5px;
+            bottom: 9px;
         }
-
-      
 
         #toDo {
             margin: auto;
@@ -67,8 +59,10 @@
             background-color: rgb(122, 155, 192);
             margin-top: 50px;
             position: relative;
-            
+        }
 
+        .checked {
+            width: 30px;
         }
     </style>
 
@@ -79,36 +73,22 @@
 
     <div id="toDo">
         <h1>To-Do <small>List</small></h1>
-        <!-- Sta znači "role"? -->
+        <!-- Sta znaci "role"? -->
         <form role="form">
             <div class="form-group">
                 <input id="task" type="text" class="form-control" placeholder="Your Task" name="task">
 
-                <input id="add" type="button" value="Add" class="btn btn btn-primary">
+                <input id="add" type="button" value="Add" class="btn btn-primary">
             </div>
-            <!-- Klasa list-group resava da idu jedno ispod drugog. -->
 
             <ul id="ul" class="list-group">
-
-
-
             </ul>
-
             <div id="div" class="form-group">
-
             </div>
 
             <div id="deleteAll">
-
             </div>
-
-
-
         </form>
-
-
-
-
     </div>
 
 
@@ -117,18 +97,12 @@
     <script type='text/javascript'>
 
 
-        var brojac = 0;
+
         var add = document.getElementById('add');
         // Adding tasks 
         add.onclick = function () {
-
-            brojac = brojac + 1;
-
             var task = document.getElementById('task').value;
-
             if (task != "") {
-
-
                 var task = document.getElementById('task').value,
                     ul = document.getElementById("ul"),
                     li = document.createElement("li"),
@@ -136,87 +110,82 @@
                     textTask = document.createTextNode(task);
 
                 li.appendChild(textTask);
-
                 li.setAttribute("class", "list-group-item");
                 document.getElementById('task').value = '';
 
                 var done = document.createElement("INPUT");
                 done.setAttribute("type", "checkbox");
-                li.appendChild(done);
                 done.setAttribute("class", "check");
+                done.setAttribute("onclick", "f()");
+
+                li.appendChild(done);
 
                 var labelDone = document.createElement("LABEL");
                 labelDone.setAttribute("class", "lblDone");
-                labelDone.textContent = "Done";
+                labelDone.setAttribute("style", "color:red");
+
+                labelDone.textContent = "Undone";
                 li.appendChild(labelDone);
-
                 //Delete task
-
                 var deleteButton = document.createElement("INPUT");
                 deleteButton.setAttribute("type", "button");
-                deleteButton.id = "btnDel";
-                deleteButton.setAttribute("class", "btn btn btn-danger");
+                //
+                // deleteButton.class = "btnDel";
+                deleteButton.className = "btnDel btn-danger";
+
                 deleteButton.value = "Delete";
                 li.appendChild(deleteButton);
-
-                div.appendChild(li);
-
                 ul.appendChild(li);
-
-
                 deleteButton.onclick = function () {
 
                     li.remove();
-
                 };
-
-                //Delete all checked tasks
-
-                var deleteAllButton = document.createElement("INPUT");
-                deleteAllButton.setAttribute("type", "button");
-                deleteAllButton.setAttribute("class", "btn btn btn-danger");
-                deleteAllButton.value = "Delete all checked tasks";
-
-                var deleteAll = document.getElementById("deleteAll");
-
-                if (brojac === 1) {
-                    deleteAll.appendChild(deleteAllButton);
-                }
-
-                deleteAllButton.onclick = function () {
-
-                    if (done.checked) {
-                        li.setAttribute("class", "checked");
-                    }
-
-                    var checkedBoxes = document.getElementsByClassName("checked");
-                    for (var i = 0; i < checkedBoxes.length; i++) {
-                        checkedBoxes[i].setAttribute("style", "display:none;");
-                        console.log(checkedBoxes[i]);
-                    }
-
-                };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             }
         };
 
+        //Delete all checked tasks
+        var deleteAllButton = document.createElement("INPUT");
+        deleteAllButton.setAttribute("type", "button");
+        deleteAllButton.setAttribute("class", "btn btn-danger");
+        deleteAllButton.value = "Delete all checked tasks";
+        var deleteAll = document.getElementById("deleteAll");
+
+        deleteAll.appendChild(deleteAllButton);
+        deleteAll.setAttribute("style", "visibility:hidden");
+
+        var checkedBoxes = document.getElementsByClassName("check");
+        var labels = document.getElementsByClassName("lblDone");
 
 
+        function f() {
+            for (let j = 0; j < checkedBoxes.length; j++) {
+                if (checkedBoxes[j].checked) {
+                    //Radi visibility samo ako se poslednji cekira!
+                    deleteAll.setAttribute("style", "visibility:visible");
+                    labels[j].textContent = "Done";
+                    labels[j].style.color = "green";
+                } else {
+                    deleteAll.setAttribute("style", "visibility:hidden");
+                    labels[j].textContent = "Undone";
+                    labels[j].style.color = "red"
+
+                }
+            }
+
+
+        };
+
+
+
+        deleteAllButton.onclick = function () {
+
+            for (var i = 0; i < checkedBoxes.length; i++) {
+                if (checkedBoxes[i].checked)
+                    checkedBoxes[i].parentElement.remove();
+            }
+        };
     </script>
 
 
