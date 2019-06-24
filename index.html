@@ -64,6 +64,10 @@
         .checked {
             width: 30px;
         }
+
+        #deleteAll {
+            margin: 15px;
+        }
     </style>
 
 </head>
@@ -83,8 +87,8 @@
 
             <ul id="ul" class="list-group">
             </ul>
-            <div id="div" class="form-group">
-            </div>
+            <p id="num" class="form-group">
+            </p>
 
             <div id="deleteAll">
             </div>
@@ -96,11 +100,15 @@
 
     <script type='text/javascript'>
 
-
-
+        var number_of_tasks = 0;
+        var numOfTasks = document.getElementById("num");
         var add = document.getElementById('add');
         // Adding tasks 
         add.onclick = function () {
+
+            number_of_tasks++;
+            numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
+
             var task = document.getElementById('task').value;
             if (task != "") {
                 var task = document.getElementById('task').value,
@@ -139,9 +147,10 @@
                 deleteButton.onclick = function () {
 
                     li.remove();
+                    number_of_tasks--;
+                    numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
+
                 };
-
-
             }
         };
 
@@ -158,18 +167,20 @@
         var checkedBoxes = document.getElementsByClassName("check");
         var labels = document.getElementsByClassName("lblDone");
 
-
         function f() {
+
             for (let j = 0; j < checkedBoxes.length; j++) {
                 if (checkedBoxes[j].checked) {
                     //Radi visibility samo ako se poslednji cekira!
                     deleteAll.setAttribute("style", "visibility:visible");
+
                     labels[j].textContent = "Done";
                     labels[j].style.color = "green";
                 } else {
-                    deleteAll.setAttribute("style", "visibility:hidden");
                     labels[j].textContent = "Undone";
-                    labels[j].style.color = "red"
+                    labels[j].style.color = "red";
+
+                    deleteAll.setAttribute("style", "visibility:hidden");
 
                 }
             }
@@ -177,13 +188,14 @@
 
         };
 
-
-
         deleteAllButton.onclick = function () {
 
-            for (var i = 0; i < checkedBoxes.length; i++) {
+            for (let i = 0; i < checkedBoxes.length; i++) {
                 if (checkedBoxes[i].checked)
                     checkedBoxes[i].parentElement.remove();
+                //Ne radi ispravno brojac na klik ovog dugmeta?!
+                number_of_tasks--;
+                numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
             }
         };
     </script>
