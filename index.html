@@ -106,11 +106,14 @@
         // Adding tasks 
         add.onclick = function () {
 
-            number_of_tasks++;
-            numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
+
 
             var task = document.getElementById('task').value;
             if (task != "") {
+
+                number_of_tasks++;
+                numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
+
                 var task = document.getElementById('task').value,
                     ul = document.getElementById("ul"),
                     li = document.createElement("li"),
@@ -191,11 +194,13 @@
         deleteAllButton.onclick = function () {
 
             for (let i = 0; i < checkedBoxes.length; i++) {
-                if (checkedBoxes[i].checked)
+                if (checkedBoxes[i].checked) {
                     checkedBoxes[i].parentElement.remove();
-                //Ne radi ispravno brojac na klik ovog dugmeta?!
-                number_of_tasks--;
-                numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
+                    i--;
+                    //Ne radi ispravno brojac na klik ovog dugmeta?!
+                    number_of_tasks--;
+                    numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
+                }
             }
         };
     </script>
