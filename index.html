@@ -9,14 +9,13 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <style>
         body {
             background-color: aquamarine;
         }
 
         #task {
-            max-width: 500px;
+            width: 600px; 
             margin: auto;
         }
 
@@ -28,22 +27,20 @@
             position: relative;
             margin: 10px;
             text-align: left;
-
         }
 
 
         .check {
             position: absolute;
-            right: 145px;
+            right: 135px;
             top: 15px;
             width: 20px;
             height: 20px;
-
         }
 
         .lblDone {
             position: absolute;
-            right: 85px;
+            right: 75px;
         }
 
         .btnDel {
@@ -55,7 +52,7 @@
         #toDo {
             margin: auto;
             text-align: center;
-            width: 600px;
+            width: 640px;
             background-color: rgb(122, 155, 192);
             margin-top: 50px;
             position: relative;
@@ -65,9 +62,14 @@
             width: 30px;
         }
 
-        #deleteAll {
-            margin: 15px;
+        #deleteAll{
+            padding-bottom: 10px;
         }
+
+        #num{
+            padding-top: 10px;
+        }
+
     </style>
 
 </head>
@@ -76,37 +78,33 @@
 
 
     <div id="toDo">
+
         <h1>To-Do <small>List</small></h1>
-        <!-- Sta znaci "role"? -->
+
         <form role="form">
             <div class="form-group">
                 <input id="task" type="text" class="form-control" placeholder="Your Task" name="task">
 
                 <input id="add" type="button" value="Add" class="btn btn-primary">
             </div>
-
-            <ul id="ul" class="list-group">
-            </ul>
-            <p id="num" class="form-group">
-            </p>
-
-            <div id="deleteAll">
-            </div>
         </form>
+
+        <ul id="ul" class="list-group"></ul>
+
+        <p id="num" class="form-group"></p>
+
+        <div id="deleteAll"></div>
+
     </div>
-
-
-
 
     <script type='text/javascript'>
 
         var number_of_tasks = 0;
         var numOfTasks = document.getElementById("num");
         var add = document.getElementById('add');
+
         // Adding tasks 
         add.onclick = function () {
-
-
 
             var task = document.getElementById('task').value;
             if (task != "") {
@@ -128,25 +126,22 @@
                 done.setAttribute("type", "checkbox");
                 done.setAttribute("class", "check");
                 done.setAttribute("onclick", "f()");
-
                 li.appendChild(done);
 
                 var labelDone = document.createElement("LABEL");
                 labelDone.setAttribute("class", "lblDone");
                 labelDone.setAttribute("style", "color:red");
-
                 labelDone.textContent = "Undone";
                 li.appendChild(labelDone);
+
                 //Delete task
                 var deleteButton = document.createElement("INPUT");
                 deleteButton.setAttribute("type", "button");
-                //
-                // deleteButton.class = "btnDel";
                 deleteButton.className = "btnDel btn-danger";
-
                 deleteButton.value = "Delete";
                 li.appendChild(deleteButton);
                 ul.appendChild(li);
+
                 deleteButton.onclick = function () {
 
                     li.remove();
@@ -162,8 +157,8 @@
         deleteAllButton.setAttribute("type", "button");
         deleteAllButton.setAttribute("class", "btn btn-danger");
         deleteAllButton.value = "Delete all checked tasks";
-        var deleteAll = document.getElementById("deleteAll");
 
+        var deleteAll = document.getElementById("deleteAll");
         deleteAll.appendChild(deleteAllButton);
         deleteAll.setAttribute("style", "visibility:hidden");
 
@@ -172,40 +167,51 @@
 
         function f() {
 
+            let num_of_done = 0;
+
             for (let j = 0; j < checkedBoxes.length; j++) {
                 if (checkedBoxes[j].checked) {
-                    //Radi visibility samo ako se poslednji cekira!
-                    deleteAll.setAttribute("style", "visibility:visible");
 
+                    num_of_done++;
                     labels[j].textContent = "Done";
                     labels[j].style.color = "green";
+
                 } else {
+
                     labels[j].textContent = "Undone";
                     labels[j].style.color = "red";
 
-                    deleteAll.setAttribute("style", "visibility:hidden");
-
                 }
             }
+            if (num_of_done > 0) {
 
+                deleteAll.setAttribute("style", "visibility:visible;");
 
+            } else {
+
+                deleteAll.setAttribute("style", "visibility:hidden;");
+
+            }
         };
 
         deleteAllButton.onclick = function () {
 
             for (let i = 0; i < checkedBoxes.length; i++) {
+
                 if (checkedBoxes[i].checked) {
+
                     checkedBoxes[i].parentElement.remove();
                     i--;
-                    //Ne radi ispravno brojac na klik ovog dugmeta?!
                     number_of_tasks--;
                     numOfTasks.textContent = "Number of tasks: " + number_of_tasks;
+
                 }
             }
+
+            deleteAll.setAttribute("style", "visibility:hidden;");
+
         };
     </script>
-
-
 
 </body>
 
